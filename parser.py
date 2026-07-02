@@ -525,5 +525,5 @@ if __name__ == "__main__":
     print("Sistem Parser AI-CAM 3-Axis (Engine Ready)\n" + "="*40)
     
     # Untuk mengujinya, hapus tanda pagar (#) pada baris di bawah 
-    # dan pastikan Anda memiliki file 'contoh_part.step' di folder yang sama
+    # dan pastikan Anda memiliki file 'part1.step' di folder yang sama
     # analisa_file_step("contoh_part.step")
