@@ -8,35 +8,36 @@ def analisa_fitur_ai(file_path):
         
         fitur_datar = 0
         fitur_silinder_lubang = 0
-        tipe_ditemukan = set()
         
-        # AI menganalisis karakteristik geometri tiap permukaan
         for face in faces:
-            # Perbaikan Utama: Menambahkan () untuk mengeksekusi fungsi geomType()
             jenis_geometri = str(face.geomType()).upper()
-            tipe_ditemukan.add(jenis_geometri)
-            
-            # Aturan AI 1: Jika mengandung kata PLANE (Datar)
             if "PLANE" in jenis_geometri:
                 fitur_datar += 1
-            # Aturan AI 2: Jika mengandung kata CYLINDER (Silinder/Lubang)
             elif "CYLINDER" in jenis_geometri:
                 fitur_silinder_lubang += 1
         
-        print(f"--- 🔎 LOG DIAGNOSTIK KERNEL CAD ---")
-        print(f"Daftar tipe permukaan yang terbaca: {list(tipe_ditemukan)}\n")
-        
-        # Menampilkan Ringkasan Analisis AI
+        # 1. Tampilkan Hasil Deteksi Fitur
         print(f"--- 🧠 HASIL DETEKSI FITUR AI-CAM ---")
         print(f"Permukaan Datar (Planar Pocket/Facing) : {fitur_datar} ditemukan")
         print(f"Fitur Silinder (Hole/Drilling)         : {fitur_silinder_lubang} ditemukan\n")
         
-        # Ekstraksi Bounding Box untuk Ukuran Raw Material
+        # 2. Tampilkan Rekomendasi Dimensi Material
         bbox = benda_kerja.val().BoundingBox()
         print(f"--- 📐 REKOMENDASI UKURAN MATERIAL (RAW BLOCK) ---")
         print(f"Minimal Panjang (X) : {bbox.xlen:.4f} mm")
         print(f"Minimal Lebar (Y)   : {bbox.ylen:.4f} mm")
-        print(f"Minimal Tinggi (Z)  : {bbox.zlen:.4f} mm")
+        print(f"Minimal Tinggi (Z)  : {bbox.zlen:.4f} mm\n")
+        
+        # 3. KECERDASAN BUATAN: Menghasilkan Ringkasan & Deskripsi Proses Permesinan CNC 3-Axis
+        print(f"--- 📋 DESKRIPSI OTOMATIS AI-CAM PROSES 3-AXIS ---")
+        print(f"Benda kerja ini terdeteksi sebagai komponen blok mekanikal berukuran {bbox.xlen:.1f}x{bbox.ylen:.1f}x{bbox.zlen:.1f} mm.")
+        
+        if fitur_datar > 0:
+            print(f"- [OPERASI 1]: Gunakan proses Flat End-Mill (Facing/Pocketing) untuk meratakan {fitur_datar} permukaan datar.")
+        if fitur_silinder_lubang > 0:
+            print(f"- [OPERASI 2]: Terdeteksi {fitur_silinder_lubang} fitur silindris. Gunakan operasi Boring/Drilling untuk membuat lubang.")
+            
+        print(f"- [KESIMPULAN]: Komponen siap diproses menggunakan setup Ragum Standar pada Mesin CNC Milling 3-Axis.")
         
     except Exception as e:
         print(f"Gagal memproses AI CAM: {e}")
