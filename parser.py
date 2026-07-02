@@ -8,12 +8,12 @@ def analisa_fitur_ai(file_path):
         
         fitur_datar = 0
         fitur_silinder_lubang = 0
-        tipe_ditemukan = set() # Untuk mencatat semua tipe permukaan unik yang dibaca sistem
+        tipe_ditemukan = set()
         
         # AI menganalisis karakteristik geometri tiap permukaan
         for face in faces:
-            # Ambil tipe geometri dan paksa menjadi HURUF BESAR agar konsisten
-            jenis_geometri = str(face.geomType).upper()
+            # Perbaikan Utama: Menambahkan () untuk mengeksekusi fungsi geomType()
+            jenis_geometri = str(face.geomType()).upper()
             tipe_ditemukan.add(jenis_geometri)
             
             # Aturan AI 1: Jika mengandung kata PLANE (Datar)
@@ -26,7 +26,7 @@ def analisa_fitur_ai(file_path):
         print(f"--- 🔎 LOG DIAGNOSTIK KERNEL CAD ---")
         print(f"Daftar tipe permukaan yang terbaca: {list(tipe_ditemukan)}\n")
         
-        # Menampilkan Ringkasan Analisis AI setelah perbaikan kecocokan teks
+        # Menampilkan Ringkasan Analisis AI
         print(f"--- 🧠 HASIL DETEKSI FITUR AI-CAM ---")
         print(f"Permukaan Datar (Planar Pocket/Facing) : {fitur_datar} ditemukan")
         print(f"Fitur Silinder (Hole/Drilling)         : {fitur_silinder_lubang} ditemukan\n")
