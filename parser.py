@@ -4,19 +4,22 @@ def analisa_fitur_ai(file_path):
     print(f"Memproses file CAD: {file_path}...\n")
     try:
         benda_kerja = cq.importers.importStep(file_path)
+        
+        # Mengambil daftar face menggunakan selektor bawaan CadQuery
         faces = benda_kerja.faces().vals()
         
         fitur_datar = 0
         fitur_silinder_lubang = 0
         
-        # AI menganalisis satu per satu permukaan objek
+        # AI menganalisis karakteristik geometri tiap permukaan
         for face in faces:
-            jenis_geometri = face.GeometryType()
+            # Menggunakan .geomType langsung yang dijamin ada di CadQuery
+            jenis_geometri = face.geomType
             
-            # Aturan AI 1: Jika permukaan datar, ini area potensial untuk Facing/Pocketing CNC
+            # Aturan AI 1: Jika permukaan datar (PLANE)
             if jenis_geometri == "PLANE":
                 fitur_datar += 1
-            # Aturan AI 2: Jika berbentuk silinder, ini adalah lubang/poros untuk Drilling
+            # Aturan AI 2: Jika berbentuk silinder (CYLINDER)
             elif jenis_geometri == "CYLINDER":
                 fitur_silinder_lubang += 1
         
