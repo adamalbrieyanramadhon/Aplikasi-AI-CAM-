@@ -4,26 +4,29 @@ def analisa_fitur_ai(file_path):
     print(f"Memproses file CAD: {file_path}...\n")
     try:
         benda_kerja = cq.importers.importStep(file_path)
-        
-        # Mengambil daftar face menggunakan selektor bawaan CadQuery
         faces = benda_kerja.faces().vals()
         
         fitur_datar = 0
         fitur_silinder_lubang = 0
+        tipe_ditemukan = set() # Untuk mencatat semua tipe permukaan unik yang dibaca sistem
         
         # AI menganalisis karakteristik geometri tiap permukaan
         for face in faces:
-            # Menggunakan .geomType langsung yang dijamin ada di CadQuery
-            jenis_geometri = face.geomType
+            # Ambil tipe geometri dan paksa menjadi HURUF BESAR agar konsisten
+            jenis_geometri = str(face.geomType).upper()
+            tipe_ditemukan.add(jenis_geometri)
             
-            # Aturan AI 1: Jika permukaan datar (PLANE)
-            if jenis_geometri == "PLANE":
+            # Aturan AI 1: Jika mengandung kata PLANE (Datar)
+            if "PLANE" in jenis_geometri:
                 fitur_datar += 1
-            # Aturan AI 2: Jika berbentuk silinder (CYLINDER)
-            elif jenis_geometri == "CYLINDER":
+            # Aturan AI 2: Jika mengandung kata CYLINDER (Silinder/Lubang)
+            elif "CYLINDER" in jenis_geometri:
                 fitur_silinder_lubang += 1
         
-        # Menampilkan Ringkasan Analisis AI
+        print(f"--- 🔎 LOG DIAGNOSTIK KERNEL CAD ---")
+        print(f"Daftar tipe permukaan yang terbaca: {list(tipe_ditemukan)}\n")
+        
+        # Menampilkan Ringkasan Analisis AI setelah perbaikan kecocokan teks
         print(f"--- 🧠 HASIL DETEKSI FITUR AI-CAM ---")
         print(f"Permukaan Datar (Planar Pocket/Facing) : {fitur_datar} ditemukan")
         print(f"Fitur Silinder (Hole/Drilling)         : {fitur_silinder_lubang} ditemukan\n")
